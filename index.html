@@ -243,14 +243,14 @@ results.push({id:"storage",nombre:"Almacenamiento del navegador",tamano:usado,ti
 resolve()}).catch(function(){resolve()})}else{resolve()}}));
 
 promesas.push(new Promise(function(resolve){
-var total=0;for(var k in localStorage)total+=localStorage.getItem(k).length*2;
+var total=0;try{for(var k=0;k<localStorage.length;k++){var key=localStorage.key(k);if(key){var val=localStorage.getItem(key);if(val)total+=val.length*2}}}catch(e){}
 if(total>0){results.push({id:"localStorage",nombre:"Datos locales (localStorage)",tamano:total,tipo:"app",seguro:true,desc:"Pequeños datos guardados por las páginas web. Es seguro limpiarlos, solo perderás preferencias de sitios web."})}
 resolve()}));
 
 promesas.push(new Promise(function(resolve){
 if("caches"in window){
 caches.keys().then(function(keys){
-var prom=keys.map(function(k){return caches.open(k).then(function(c){return c.keys().then(function(r){var total=0;r.forEach(function(){total+=1024});return{nombre:"Caché: "+k,tamano:total*total,tipo:"cache",seguro:true,desc:"Archivos en caché del navegador para cargar más rápido. Es seguro eliminarlos, las apps los recrearán."}})}).catch(function(){return null})});
+var prom=keys.map(function(k){return caches.open(k).then(function(c){return c.keys().then(function(r){var total=0;r.forEach(function(){total+=1024});return{nombre:"Caché: "+k,tamano:total,tipo:"cache",seguro:true,desc:"Archivos en caché del navegador para cargar más rápido. Es seguro eliminarlos, las apps los recrearán."}})}).catch(function(){return null})});
 Promise.all(prom).then(function(items){items.forEach(function(i){if(i)results.push(i)});resolve()}).catch(function(){resolve()})
 }).catch(function(){resolve()})
 }else{resolve()}}));
