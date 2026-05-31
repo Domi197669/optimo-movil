@@ -353,6 +353,8 @@ function guardarCfg(){localStorage.setItem("optimo_cfg",JSON.stringify(CFG))}
 
 function reiniciarDatos(){if(confirm("¿Reiniciar todos los datos de Óptimo Móvil?")){localStorage.removeItem("optimo_hist");localStorage.removeItem("optimo_cfg");HIST_LIM={limpiezas:[]};CFG={safeMode:true,backupMode:true,dailyRemind:false};ULTIMO_ANALISIS=null;actualizarDashboard();renderAnalisis();renderHistorial();toast("Datos reiniciados","g")}}
 
+window.navegar=navegar;window.escanear=escanear;window.abrirModalLimpieza=abrirModalLimpieza;window.cerrarModalLimpieza=cerrarModalLimpieza;window.ejecutarLimpieza=ejecutarLimpieza;window.abrirModalItem=abrirModalItem;window.cerrarModalItem=cerrarModalItem;window.reiniciarDatos=reiniciarDatos;
+
 $("safeMode").addEventListener("change",function(){CFG.safeMode=this.checked;guardarCfg()});
 $("backupMode").addEventListener("change",function(){CFG.backupMode=this.checked;guardarCfg()});
 $("dailyRemind").addEventListener("change",function(){CFG.dailyRemind=this.checked;guardarCfg()});
