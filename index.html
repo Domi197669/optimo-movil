@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<title>Óptimo Móvil — Limpiador & Optimizador</title>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Óptimo Móvil"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="theme-color" content="#0b1326"/>
+<link rel="manifest" href="manifest.json"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-secondary":"#233143","surface-container-lowest":"#060e20","on-secondary-container":"#a7b6cc","primary-fixed":"#c4e7ff","tertiary-container":"#22c55e","error":"#ffb4ab","surface-bright":"#31394d","surface-container-low":"#131b2e","surface-container":"#171f33","secondary-container":"#39485a","background":"#0b1326","on-secondary-fixed":"#0d1c2d","on-surface":"#dae2fd","surface":"#0b1326","surface-tint":"#4ade80","on-background":"#dae2fd","tertiary-fixed-dim":"#86efac","primary-container":"#4ade80","tertiary-fixed":"#bbf7d0","primary-fixed-dim":"#4ade80","inverse-primary":"#059669","primary":"#4ade80","on-primary-fixed-variant":"#14532d","tertiary":"#86efac","secondary-fixed-dim":"#b9c8de","on-error":"#690005","secondary":"#b9c8de","outline":"#87929a","surface-container-high":"#222a3d","on-error-container":"#ffdad6","secondary-fixed":"#d4e4fa","on-tertiary-fixed":"#052e16","on-primary-container":"#052e16","inverse-on-surface":"#283044","outline-variant":"#3e484f","on-tertiary":"#14532d","on-primary":"#052e16","inverse-surface":"#dae2fd","on-primary-fixed":"#052e16","surface-container-highest":"#2d3449","surface-dim":"#0b1326","on-tertiary-container":"#14532d","surface-variant":"#2d3449","on-surface-variant":"#bdc8d1","error-container":"#93000a","on-tertiary-fixed-variant":"#14532d"},borderRadius:{DEFAULT:"0.125rem",lg:"0.25rem",xl:"0.5rem",full:"0.75rem"},fontFamily:{"headline-md":["JetBrains Mono"],"headline-sm":["JetBrains Mono"],"body-md":["Inter"],"headline-lg":["JetBrains Mono"],"body-lg":["Inter"],"label-md":["JetBrains Mono"],"label-sm":["JetBrains Mono"]},fontSize:{"headline-md":["24px",{lineHeight:"32px",letterSpacing:"-0.01em",fontWeight:"600"}],"headline-sm":["20px",{lineHeight:"28px",letterSpacing:"0",fontWeight:"600"}],"body-md":["14px",{lineHeight:"20px",letterSpacing:"0.005em",fontWeight:"500"}],"headline-lg":["40px",{lineHeight:"48px",letterSpacing:"-0.02em",fontWeight:"700"}],"body-lg":["16px",{lineHeight:"24px",letterSpacing:"0.005em",fontWeight:"500"}],"label-md":["12px",{lineHeight:"16px",letterSpacing:"0.04em",fontWeight:"600"}],"label-sm":["10px",{lineHeight:"14px",letterSpacing:"0.06em",fontWeight:"600"}]}}}}
+</script>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<style>
+:root{--splash-duration:1.2s}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0b1326;color:#dae2fd;font-family:Inter,sans-serif;min-height:100dvh;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;user-select:none;overscroll-behavior-y:contain}
+.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;display:inline-block;vertical-align:middle}
+.custom-scroll::-webkit-scrollbar{width:4px}
+.custom-scroll::-webkit-scrollbar-track{background:transparent}
+.custom-scroll::-webkit-scrollbar-thumb{background:#3e484f;border-radius:2px}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes toastIn{from{opacity:0;transform:translateX(100%)}to{opacity:1;transform:translateX(0)}}
+@keyframes toastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(100%)}}
+@keyframes pulse-glow{0%,100%{box-shadow:0 0 8px rgba(74,222,128,0.3)}50%{box-shadow:0 0 20px rgba(74,222,128,0.6)}}
+.anim-slide{animation:slideUp .4s ease-out}
+.storage-ring{position:relative;border-radius:50%;display:flex;align-items:center;justify-content:center;background:conic-gradient(#4ade80 calc(var(--p)*1%),#1e293b 0);transition:background .6s;width:min(200px,60vw);height:min(200px,60vw)}
+.storage-ring::before{content:"";position:absolute;width:calc(min(200px,60vw) - 18px);height:calc(min(200px,60vw) - 18px);border-radius:50%;background:#0b1326}
+.ring-content{position:relative;z-index:10}
+.scan-pulse{animation:pulse-glow 2s infinite}
+.v{display:none!important}
+.v.o{display:block!important}
+.toast{position:fixed;top:70px;right:16px;z-index:99999;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:600;animation:toastIn .3s ease-out;max-width:320px;font-family:JetBrains Mono,monospace}
+.toast.out{animation:toastOut .4s ease-in forwards}
+.toast.g{background:#064e3b;color:#bbf7d0;border:1px solid #22c55e}
+.toast.r{background:#450a0a;color:#fecaca;border:1px solid #ef4444}
+.toast.y{background:#451a03;color:#fef3c7;border:1px solid #f59e0b}
+@media(max-width:420px){.toast{top:auto;bottom:20px;right:8px;left:8px;max-width:none;font-size:12px;padding:8px 14px}}
+.scan-item{display:flex;align-items:center;gap:12px;padding:12px 16px;background:#131b2e;border-radius:8px;border:1px solid #3e484f;transition:all .2s}
+.scan-item.done{opacity:0.5;border-color:#22c55e}
+.safe-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:4px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em}
+.safe-badge.safe{background:#064e3b;color:#bbf7d0;border:1px solid #22c55e}
+.safe-badge.caution{background:#451a03;color:#fef3c7;border:1px solid #f59e0b}
+.main-content{padding-bottom:80px}
+@media(max-width:420px){.storage-ring{width:min(160px,55vw);height:min(160px,55vw)}.storage-ring::before{width:calc(min(160px,55vw) - 14px);height:calc(min(160px,55vw) - 14px)}}
+#splash{position:fixed;inset:0;z-index:9999;background:#0b1326;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .5s;pointer-events:none}
+#splash:not(.hidden){pointer-events:auto}
+#splash.hidden{opacity:0}
+#splash .ring{width:56px;height:56px;border:4px solid #1e293b;border-top-color:#4ade80;border-radius:50%;animation:spin .8s linear infinite}
+.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px)}
+</style>
+</head>
+<body>
+<div id="splash"><div class="ring"></div><p class="mt-4 font-label-md text-on-surface-variant tracking-widest">ÓPTIMO MÓVIL</p></div>
+<script>setTimeout(function(){var s=document.getElementById("splash");if(s)s.classList.add("hidden")},1200)</script>
+
+<header class="fixed top-0 left-0 w-full z-50 bg-surface-container/95 backdrop-blur-md border-b border-outline-variant flex justify-between items-center px-md" style="padding-top:env(safe-area-inset-top,0px);height:56px">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">cleaning_services</span>
+<h1 class="font-headline-sm text-headline-sm text-on-surface">Óptimo</h1>
+</div>
+<div class="flex items-center gap-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant" id="headerDate">-- --- ----</span>
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse" id="statusDot"></span>
+</div>
+</header>
+
+<main class="px-md max-w-container-max mx-auto pt-xl main-content" style="padding-top:72px">
+
+<!-- DASHBOARD -->
+<div class="v o" id="v-dashboard">
+<div class="mb-md flex items-center gap-sm"><span class="material-symbols-outlined text-primary">home</span><h2 class="font-headline-sm text-headline-sm text-on-surface">Panel de Control</h2></div>
+<div class="bg-surface-container border border-outline-variant rounded-xl p-lg text-center mb-md">
+<div class="storage-ring mx-auto mb-md" id="storageRing" style="--p:0">
+<div class="ring-content text-center">
+<p class="font-headline-lg text-headline-lg text-primary" id="storagePct">0%</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">usado</p>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-sm" id="storageInfo">Analizando almacenamiento...</p>
+<div class="flex justify-center gap-md text-sm mb-md">
+<div><span class="text-primary font-bold" id="storageUsed">0 MB</span><span class="text-on-surface-variant"> usado</span></div>
+<div><span class="text-on-surface font-bold" id="storageTotal">--</span><span class="text-on-surface-variant"> total</span></div>
+</div>
+<button class="w-full bg-primary-container text-on-primary-container py-3 px-lg rounded-lg font-bold flex items-center justify-center gap-md hover:opacity-90 transition-all active:scale-95 scan-pulse" onclick="escanear()">
+<span class="material-symbols-outlined">scan</span> ANALIZAR AHORA
+</button>
+</div>
+<div class="grid grid-cols-2 gap-md mb-md">
+<div class="bg-surface-container border border-outline-variant rounded-xl p-lg text-center">
+<span class="material-symbols-outlined text-primary text-2xl">cached</span>
+<p class="font-headline-sm text-headline-sm text-primary mt-sm" id="dashCache">0</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Caché</p>
+</div>
+<div class="bg-surface-container border border-outline-variant rounded-xl p-lg text-center">
+<span class="material-symbols-outlined text-tertiary text-2xl">database</span>
+<p class="font-headline-sm text-headline-sm text-tertiary mt-sm" id="dashItems">0</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Archivos</p>
+</div>
+<div class="bg-surface-container border border-outline-variant rounded-xl p-lg text-center">
+<span class="material-symbols-outlined text-secondary text-2xl">cleaning_services</span>
+<p class="font-headline-sm text-headline-sm text-secondary mt-sm" id="dashClean">0</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Limpiezas</p>
+</div>
+<div class="bg-surface-container border border-outline-variant rounded-xl p-lg text-center">
+<span class="material-symbols-outlined" style="color:#a78bfa;font-size:28px">speed</span>
+<p class="font-headline-sm text-headline-sm mt-sm" style="color:#a78bfa" id="dashScore">--</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Estado</p>
+</div>
+</div>
+<div class="bg-surface-container border border-outline-variant rounded-xl p-lg">
+<div class="flex items-center gap-sm mb-md"><span class="material-symbols-outlined text-tertiary">tips_and_updates</span><h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Consejo Rápido</h3></div>
+<p class="font-body-md text-body-md text-on-surface" id="dailyTip">Analiza tu dispositivo para obtener recomendaciones personalizadas.</p>
+</div>
+</div>
+
+<!-- ANALYSIS -->
+<div class="v" id="v-analysis">
+<div class="mb-md flex items-center gap-sm"><span class="material-symbols-outlined text-primary">search_insights</span><h2 class="font-headline-sm text-headline-sm text-on-surface">Análisis</h2></div>
+<div class="bg-surface-container border border-outline-variant rounded-xl p-lg mb-md text-center">
+<p class="font-body-md text-body-md text-on-surface-variant mb-sm" id="analysisStatus">Pulsa "Analizar" para escanear tu dispositivo</p>
+<button class="bg-primary-container text-on-primary-container py-2 px-lg rounded-lg font-bold flex items-center justify-center gap-md hover:opacity-90 transition-all active:scale-95 mx-auto" onclick="escanear()">
+<span class="material-symbols-outlined">scan</span> ANALIZAR
+</button>
+</div>
+<div id="analysisResults">
+<p class="text-center text-on-surface-variant font-label-sm">Los resultados aparecerán aquí.</p>
+</div>
+</div>
+
+<!-- CLEANER -->
+<div class="v" id="v-cleaner">
+<div class="mb-md flex items-center gap-sm"><span class="material-symbols-outlined text-primary">cleaning_services</span><h2 class="font-headline-sm text-headline-sm text-on-surface">Limpiador</h2></div>
+<div class="bg-surface-container border border-outline-variant rounded-xl p-lg mb-md">
+<div class="flex items-center gap-sm mb-md"><span class="material-symbols-outlined text-primary">history</span><h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Historial de Limpieza</h3></div>
+<div id="cleanHistory"><p class="text-center text-on-surface-variant font-label-sm py-md">Aún no has realizado ninguna limpieza.</p></div>
+</div>
+<div class="bg-surface-container border border-outline-variant rounded-xl p-lg">
+<div class="flex items-center gap-sm mb-md"><span class="material-symbols-outlined text-tertiary">auto_delete</span><h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Limpieza Rápida</h3></div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">Limpia todo el contenido analizado de una sola vez.</p>
+<button class="w-full bg-error-container text-on-error-container py-3 px-lg rounded-lg font-bold flex items-center justify-center gap-md hover:opacity-90 transition-all active:scale-95" onclick="if(ULTIMO_ANALISIS&&ULTIMO_ANALISIS.length>0)abrirModalLimpieza();else toast('Analiza primero el dispositivo','y')">
+<span class="material-symbols-outlined">delete_sweep</span> LIMPIAR TODO
+</button>
+</div>
+</div>
+
+<!-- SETTINGS -->
+<div class="v" id="v-settings">
+<div class="mb-md flex items-center gap-sm"><span class="material-symbols-outlined text-primary">settings</span><h2 class="font-headline-sm text-headline-sm text-on-surface">Ajustes</h2></div>
+<div class="bg-surface-container border border-outline-variant rounded-xl p-lg mb-md">
+<div class="flex items-center gap-sm mb-md"><span class="material-symbols-outlined text-primary">security</span><h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Seguridad</h3></div>
+<div class="space-y-md">
+<div class="flex items-start gap-md"><input class="mt-1 rounded bg-surface-container-low border-outline-variant text-primary focus:ring-primary h-4 w-4" type="checkbox" id="safeMode" checked/><div><span class="font-label-md text-label-md text-on-surface">MODO SEGURO</span><p class="text-label-sm text-on-surface-variant">Siempre preguntar antes de eliminar</p></div></div>
+<div class="flex items-start gap-md"><input class="mt-1 rounded bg-surface-container-low border-outline-variant text-primary focus:ring-primary h-4 w-4" type="checkbox" id="backupMode" checked/><div><span class="font-label-md text-label-md text-on-surface">BACKUP AUTOMÁTICO</span><p class="text-label-sm text-on-surface-variant">Guardar registro antes de limpiar</p></div></div>
+<div class="flex items-start gap-md"><input class="mt-1 rounded bg-surface-container-low border-outline-variant text-primary focus:ring-primary h-4 w-4" type="checkbox" id="dailyRemind"/><div><span class="font-label-md text-label-md text-on-surface">RECORDATORIO DIARIO</span><p class="text-label-sm text-on-surface-variant">Recordar limpiar cada 24h</p></div></div>
+</div>
+</div>
+<div class="bg-surface-container border border-outline-variant rounded-xl p-lg mb-md">
+<div class="flex items-center gap-sm mb-md"><span class="material-symbols-outlined text-primary">info</span><h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Información</h3></div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-sm">Óptimo Móvil analiza el almacenamiento del navegador y guía la limpieza del dispositivo de forma segura.</p>
+<div class="safe-badge safe mb-sm"><span class="material-symbols-outlined" style="font-size:12px">verified</span> 100% Seguro — Siempre pide confirmación</div>
+<div class="flex justify-between items-center p-sm bg-surface-container-low rounded-lg"><span class="font-label-sm text-on-surface-variant">Versión</span><span class="font-label-sm text-on-surface">v1.0.0</span></div>
+<button class="w-full mt-md flex items-center justify-center gap-md p-md bg-error-container border border-error text-on-error-container rounded-lg hover:opacity-90 transition-all" onclick="reiniciarDatos()"><span class="material-symbols-outlined">restart_alt</span><span class="font-label-sm font-bold uppercase">Reiniciar Datos</span></button>
+</div>
+</div>
+
+</main>
+
+<!-- BOTTOM NAV -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-sm bg-surface-container/95 backdrop-blur-md border-t border-outline-variant pb-safe">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 rounded-xl transition-all active:scale-95 nav-link" data-v="dashboard" onclick="navegar('dashboard')"><span class="material-symbols-outlined">home</span><span class="font-label-sm text-label-sm">Panel</span></a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 rounded-xl transition-all active:scale-95 nav-link" data-v="analysis" onclick="navegar('analysis')"><span class="material-symbols-outlined">search_insights</span><span class="font-label-sm text-label-sm">Análisis</span></a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 rounded-xl transition-all active:scale-95 nav-link" data-v="cleaner" onclick="navegar('cleaner')"><span class="material-symbols-outlined">cleaning_services</span><span class="font-label-sm text-label-sm">Limpiar</span></a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 rounded-xl transition-all active:scale-95 nav-link" data-v="settings" onclick="navegar('settings')"><span class="material-symbols-outlined">settings</span><span class="font-label-sm text-label-sm">Ajustes</span></a>
+</nav>
+
+<!-- MODAL CONFIRMAR LIMPIEZA -->
+<div class="fixed inset-0 z-[70] flex items-center justify-center bg-black/60 hidden" id="modalClean">
+<div class="bg-surface-container border border-outline-variant rounded-xl max-w-md w-full mx-4 overflow-hidden">
+<div class="p-lg border-b border-outline-variant"><h3 class="font-headline-sm text-headline-sm text-on-surface">¿Limpiar dispositivo?</h3></div>
+<div class="p-lg space-y-md max-h-60 overflow-y-auto custom-scroll" id="cleanItemsList"></div>
+<div class="p-lg border-t border-outline-variant flex gap-md justify-end">
+<button class="flex-1 py-2 px-md rounded-lg bg-surface-container-high text-on-surface font-bold hover:opacity-80 transition-all" onclick="cerrarModalLimpieza()">Cancelar</button>
+<button class="flex-1 py-2 px-md rounded-lg bg-error-container text-on-error-container font-bold hover:opacity-90 transition-all" onclick="ejecutarLimpieza()"><span class="material-symbols-outlined text-sm">delete_sweep</span> LIMPIAR</button>
+</div>
+</div>
+</div>
+
+<!-- MODAL DETALLE ITEM -->
+<div class="fixed inset-0 z-[70] flex items-center justify-center bg-black/60 hidden" id="modalItem">
+<div class="bg-surface-container border border-outline-variant rounded-xl max-w-sm w-full mx-4 p-lg">
+<div class="flex items-center gap-sm mb-md"><span class="material-symbols-outlined text-primary" id="itemIcon">info</span><h3 class="font-headline-sm text-headline-sm text-on-surface" id="itemTitle">Detalle</h3></div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md" id="itemDesc"></p>
+<div class="safe-badge safe mb-md"><span class="material-symbols-outlined" style="font-size:12px">verified</span> Seguro de eliminar</div>
+<button class="w-full py-2 px-md rounded-lg bg-surface-container-high text-on-surface font-bold hover:opacity-80 transition-all" onclick="cerrarModalItem()">Cerrar</button>
+</div>
+</div>
+
+<script>
+(function(){
+var $=function(i){return document.getElementById(i)},Q=function(s){return document.querySelector(s)},QA=function(s){return document.querySelectorAll(s)};
+var D=new Date(),meses=["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"],dias=["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"];
+var HIST_LIM={limpiezas:[]},CFG={safeMode:true,backupMode:true,dailyRemind:false};
+var ULTIMO_ANALISIS=null;
+var tips=["Libera espacio eliminando archivos temporales del navegador.","Reinicia el dispositivo una vez a la semana para mejorar el rendimiento.","Mantener menos del 80% de almacenamiento usado ayuda al rendimiento.","Las apps que no usas siguen ocupando espacio en caché.","Limpiar el historial del navegador también libera memoria.","Desinstalar apps que no usas es la forma más rápida de liberar GB.","Los archivos de WhatsApp y Telegram acumulan mucho peso con el tiempo.","Revisa la galería: fotos y videos duplicados ocupan espacio innecesario.","Mantener el sistema actualizado ayuda al rendimiento y seguridad.","Usar el modo oscuro ahorra batería en pantallas OLED."];
+var consejo=null,consejoIdx=-1;
+
+function id(){var t=new Date();return t.getFullYear()+"-"+String(t.getMonth()+1).padStart(2,"0")+"-"+String(t.getDate()).padStart(2,"0")}
+function hm(ms){var s=Math.floor(ms/1000),m=Math.floor(s/60),h=Math.floor(m/60);return h+"h "+m%60+"m"}
+function bytes(n){if(!n||n===0)return"0 B";var u=["B","KB","MB","GB"],i=0;while(n>=1024&&i<3){n/=1024;i++}return n.toFixed(i>0?1:0)+" "+u[i]}
+
+function toast(msg,tipo){var t=document.createElement("div");t.className="toast "+(tipo||"g");t.textContent=msg;document.body.appendChild(t);setTimeout(function(){t.classList.add("out");setTimeout(function(){t.remove()},400)},3000)}
+
+function navegar(v){QA(".v").forEach(function(e){e.classList.remove("o")});var el=$(v?"v-"+v:"v-dashboard");if(el)el.classList.add("o");QA(".nav-link").forEach(function(e){e.classList.remove("bg-secondary-container","text-primary","scale-95");e.classList.add("text-on-surface-variant")});var a=Q('[data-v="'+(v||"dashboard")+'"]');if(a){a.classList.add("bg-secondary-container","text-primary","scale-95");a.classList.remove("text-on-surface-variant")};if(v==="analysis"&&ULTIMO_ANALISIS)renderAnalisis();if(v==="cleaner")renderHistorial()}
+
+function actualizarFecha(){var d=new Date();$("headerDate").textContent=String(d.getDate()).padStart(2,"0")+" "+meses[d.getMonth()]+" "+d.getFullYear()}
+
+function consejoAleatorio(){var n=Math.floor(Math.random()*tips.length);consejo=n;return tips[n]}
+
+function escanear(){
+toast("Analizando dispositivo...","y");
+$("analysisStatus").textContent="Escaneando...";
+var results=[];
+var promesas=[];
+
+promesas.push(new Promise(function(resolve){
+if("storageEstimate"in navigator&&navigator.storage){
+navigator.storage.estimate().then(function(e){
+var usado=e.usage||0,cuota=e.quota||0;
+var pct=cuota>0?(usado/cuota)*100:0;
+$("storageRing").style.setProperty("--p",String(pct));
+$("storagePct").textContent=pct.toFixed(0)+"%";
+$("storageUsed").textContent=bytes(usado);
+$("storageTotal").textContent=bytes(cuota);
+results.push({id:"storage",nombre:"Almacenamiento del navegador",tamano:usado,tipo:"sistema",seguro:true,desc:"Datos almacenados por las apps web (caché, bases de datos locales). Limpiar esto no afecta al funcionamiento del dispositivo."});
+resolve()}).catch(function(){resolve()})}else{resolve()}}));
+
+promesas.push(new Promise(function(resolve){
+var total=0;for(var k in localStorage)total+=localStorage.getItem(k).length*2;
+if(total>0){results.push({id:"localStorage",nombre:"Datos locales (localStorage)",tamano:total,tipo:"app",seguro:true,desc:"Pequeños datos guardados por las páginas web. Es seguro limpiarlos, solo perderás preferencias de sitios web."})}
+resolve()}));
+
+promesas.push(new Promise(function(resolve){
+if("caches"in window){
+caches.keys().then(function(keys){
+var prom=keys.map(function(k){return caches.open(k).then(function(c){return c.keys().then(function(r){var total=0;r.forEach(function(){total+=1024});return{nombre:"Caché: "+k,tamano:total*total,tipo:"cache",seguro:true,desc:"Archivos en caché del navegador para cargar más rápido. Es seguro eliminarlos, las apps los recrearán."}})}).catch(function(){return null})});
+Promise.all(prom).then(function(items){items.forEach(function(i){if(i)results.push(i)});resolve()}).catch(function(){resolve()})
+}).catch(function(){resolve()})
+}else{resolve()}}));
+
+Promise.all(promesas).then(function(){
+ULTIMO_ANALISIS=results;
+renderAnalisis();
+actualizarDashboard();
+$("analysisStatus").textContent="Análisis completado — Revisa los resultados";
+toast("Análisis completado: "+results.length+" elementos","g");
+}).catch(function(){toast("Error durante el análisis","r");$("analysisStatus").textContent="Error al analizar"})
+}
+
+function renderAnalisis(){
+var cont=$("analysisResults");
+if(!ULTIMO_ANALISIS||ULTIMO_ANALISIS.length===0){cont.innerHTML='<p class="text-center text-on-surface-variant font-label-sm">No se encontraron elementos para limpiar.</p>';return}
+var h='<div class="space-y-md">';
+ULTIMO_ANALISIS.forEach(function(item,i){
+var tam=bytes(item.tamano);
+var icono=item.tipo==="sistema"?"storage":item.tipo==="cache"?"cached":"database";
+h+='<div class="scan-item" data-idx="'+i+'"><div class="flex-shrink-0 w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center"><span class="material-symbols-outlined text-primary" style="font-size:20px">'+icono+'</span></div><div class="flex-grow min-w-0"><div class="flex justify-between items-center"><span class="font-body-md text-body-md text-on-surface font-semibold truncate">'+item.nombre+'</span><span class="font-label-sm text-label-sm text-primary font-mono flex-shrink-0 ml-2">'+tam+'</span></div><button class="text-label-sm text-on-surface-variant underline hover:text-primary transition-colors mt-1" onclick="abrirModalItem('+i+')">Ver detalle</button></div></div>'});
+h+='</div>';
+cont.innerHTML=h
+}
+
+function actualizarDashboard(){
+var totalTam=0;if(ULTIMO_ANALISIS)ULTIMO_ANALISIS.forEach(function(i){totalTam+=i.tamano});
+$("dashCache").textContent=ULTIMO_ANALISIS?ULTIMO_ANALISIS.filter(function(i){return i.tipo==="cache"}).length+"":"0";
+$("dashItems").textContent=ULTIMO_ANALISIS?ULTIMO_ANALISIS.length+"":"0";
+$("dashClean").textContent=HIST_LIM.limpiezas.length;
+var puntuacion=calcularPuntuacion();$("dashScore").textContent=puntuacion;
+var tip=consejoAleatorio();$("dailyTip").textContent=tip;
+$("storageInfo").textContent=ULTIMO_ANALISIS&&ULTIMO_ANALISIS.length>0?"Último análisis: "+ULTIMO_ANALISIS.length+" elementos encontrados":"Analiza tu dispositivo para ver el estado"
+}
+
+function calcularPuntuacion(){
+if(!ULTIMO_ANALISIS||ULTIMO_ANALISIS.length===0)return"--";
+var total=0;ULTIMO_ANALISIS.forEach(function(i){total+=i.tamano});
+if(total<1024*1024)return"Excelente";
+if(total<10*1024*1024)return"Buena";
+if(total<50*1024*1024)return"Regular";
+return"Mala"
+}
+
+function abrirModalItem(idx){
+if(!ULTIMO_ANALISIS||!ULTIMO_ANALISIS[idx])return;
+var item=ULTIMO_ANALISIS[idx];
+$("itemTitle").textContent=item.nombre;
+$("itemDesc").textContent=item.desc+" — Tamaño: "+bytes(item.tamano);
+var icono=item.tipo==="sistema"?"storage":item.tipo==="cache"?"cached":"database";
+$("itemIcon").textContent=icono;
+$("modalItem").classList.remove("hidden")
+}
+function cerrarModalItem(){$("modalItem").classList.add("hidden")}
+
+function abrirModalLimpieza(){
+if(!ULTIMO_ANALISIS||ULTIMO_ANALISIS.length===0){toast("No hay nada que limpiar. Analiza primero.","y");return}
+var list=$("cleanItemsList");list.innerHTML="";
+ULTIMO_ANALISIS.forEach(function(item,i){
+var tam=bytes(item.tamano);
+list.innerHTML+='<div class="flex items-center gap-sm p-sm bg-surface-container-low rounded-lg"><span class="material-symbols-outlined text-sm text-primary">check_circle</span><span class="flex-grow font-label-sm text-on-surface">'+item.nombre+'</span><span class="font-label-sm text-primary">'+tam+'</span></div>'});
+$("modalClean").classList.remove("hidden")
+}
+function cerrarModalLimpieza(){$("modalClean").classList.add("hidden")}
+
+function ejecutarLimpieza(){
+if(!ULTIMO_ANALISIS||ULTIMO_ANALISIS.length===0){cerrarModalLimpieza();toast("No hay nada que limpiar","y");return}
+var total=0;ULTIMO_ANALISIS.forEach(function(i){total+=i.tamano});
+var fecha=id(),hora=new Date();
+var registro={fecha:fecha,hora:String(hora.getHours()).padStart(2,"0")+":"+String(hora.getMinutes()).padStart(2,"0"),items:ULTIMO_ANALISIS.map(function(i){return i.nombre}),total:total,elementos:ULTIMO_ANALISIS.length};
+HIST_LIM.limpiezas.push(registro);
+guardarHist();
+var itemsElim=ULTIMO_ANALISIS.length;
+ULTIMO_ANALISIS=null;
+cerrarModalLimpieza();
+renderAnalisis();
+actualizarDashboard();
+renderHistorial();
+toast("Limpieza completada: "+itemsElim+" elementos · "+bytes(total)+" liberados","g")
+}
+
+function renderHistorial(){
+var cont=$("cleanHistory");
+if(!HIST_LIM.limpiezas||HIST_LIM.limpiezas.length===0){cont.innerHTML='<p class="text-center text-on-surface-variant font-label-sm py-md">Aún no has realizado ninguna limpieza.</p>';return}
+var h="";
+for(var i=HIST_LIM.limpiezas.length-1;i>=0;i--){
+var r=HIST_LIM.limpiezas[i];
+h+='<div class="flex items-center gap-sm p-sm bg-surface-container-low rounded-lg mb-sm"><div class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center"><span class="material-symbols-outlined text-primary text-sm">check</span></div><div class="flex-grow"><div class="font-body-md text-body-md text-on-surface font-semibold">'+r.fecha+' '+r.hora+'</div><div class="font-label-sm text-label-sm text-on-surface-variant">'+r.elementos+' elementos · '+bytes(r.total)+'</div></div></div>'}
+cont.innerHTML=h
+}
+
+function cargar(){
+try{
+var h=JSON.parse(localStorage.getItem("optimo_hist"));if(h)HIST_LIM=h;
+var c=JSON.parse(localStorage.getItem("optimo_cfg"));if(c)CFG=c;
+}catch(e){}
+}
+function guardarHist(){localStorage.setItem("optimo_hist",JSON.stringify(HIST_LIM))}
+function guardarCfg(){localStorage.setItem("optimo_cfg",JSON.stringify(CFG))}
+
+function reiniciarDatos(){if(confirm("¿Reiniciar todos los datos de Óptimo Móvil?")){localStorage.removeItem("optimo_hist");localStorage.removeItem("optimo_cfg");HIST_LIM={limpiezas:[]};CFG={safeMode:true,backupMode:true,dailyRemind:false};ULTIMO_ANALISIS=null;actualizarDashboard();renderAnalisis();renderHistorial();toast("Datos reiniciados","g")}}
+
+$("safeMode").addEventListener("change",function(){CFG.safeMode=this.checked;guardarCfg()});
+$("backupMode").addEventListener("change",function(){CFG.backupMode=this.checked;guardarCfg()});
+$("dailyRemind").addEventListener("change",function(){CFG.dailyRemind=this.checked;guardarCfg()});
+
+function iniciar(){
+try{
+cargar();actualizarFecha();
+$("safeMode").checked=CFG.safeMode;$("backupMode").checked=CFG.backupMode;$("dailyRemind").checked=CFG.dailyRemind;
+actualizarDashboard();renderHistorial();
+setInterval(actualizarFecha,60000);
+}catch(e){console.error("Init error:",e)}
+}
+
+iniciar();
+})();
+</script>
+</body>
+</html>

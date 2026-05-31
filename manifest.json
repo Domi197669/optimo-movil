@@ -1,0 +1,20 @@
+{
+  "name": "Óptimo Móvil — Limpiador & Optimizador",
+  "short_name": "Óptimo Móvil",
+  "description": "Limpia y optimiza tu dispositivo móvil de forma segura. Analiza caché, archivos temporales y libera espacio.",
+  "start_url": "/optimo-movil/",
+  "scope": "/optimo-movil/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait",
+  "background_color": "#0b1326",
+  "theme_color": "#0b1326",
+  "categories": ["utilities", "productivity"],
+  "lang": "es",
+  "icons": [
+    { "src": "/optimo-movil/assets/icons/icon.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/optimo-movil/assets/icons/icon.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "maskable" },
+    { "src": "/optimo-movil/assets/icons/icon.svg", "sizes": "192x192", "type": "image/svg+xml", "purpose": "any" }
+  ],
+  "prefer_related_applications": false
+}
